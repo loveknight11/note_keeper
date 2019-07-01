@@ -1,19 +1,16 @@
 package com.example.notekeeper;
 
 import android.content.Context;
-import android.provider.ContactsContract;
+import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
@@ -50,8 +47,18 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvTitle = itemView.findViewById(R.id.et_title);
             tvCourse = itemView.findViewById(R.id.tv_course);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Intent intent = new Intent(v.getContext(),NoteActivity.class);
+                    intent.putExtra("position",position);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void bind(NoteInfo note){

@@ -13,6 +13,8 @@ public class NoteInfo {
         mText = text;
     }
 
+    public NoteInfo() {}
+
     public CourseInfo getCourse() {
         return mCourse;
     }

@@ -1,5 +1,6 @@
 package com.example.notekeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity
 
     private RecyclerView rvList;
     private List<NoteInfo> mNotes;
+    private NoteAdapter noteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +43,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this,NoteActivity.class);
+                startActivity(intent);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -66,8 +68,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setRVAdapter() {
-        NoteAdapter adapter = new NoteAdapter(mNotes,this);
-        rvList.setAdapter(adapter);
+        noteAdapter = new NoteAdapter(mNotes,this);
+        rvList.setAdapter(noteAdapter);
     }
 
     @Override
@@ -100,6 +102,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        noteAdapter.notifyDataSetChanged();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

@@ -30,6 +30,6 @@ public class CourseInfo {
     @NonNull
     @Override
     public String toString() {
-        return "Title : " + mCourseTitle;
+        return mCourseTitle;
     }
 }
