@@ -25,6 +25,7 @@ public class NoteActivity extends AppCompatActivity {
     private EditText etText;
     private boolean isNewNote = false;
     private boolean isCancel = false;
+    private int notePosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +45,18 @@ public class NoteActivity extends AppCompatActivity {
             mNote = new NoteInfo();
             isNewNote = true;
         } else {
-            mNote = mNotes.get(position);
-            etText.setText(mNote.getText());
-            etTitle.setText(mNote.getTitle());
-            int spinnerPosition = mSpinnerAdapter.getPosition(mNote.getCourse());
-            spCourses.setSelection(spinnerPosition);
+            notePosition = position;
+            showNote();
         }
 
+    }
+
+    private void showNote() {
+        mNote = mNotes.get(notePosition);
+        etText.setText(mNote.getText());
+        etTitle.setText(mNote.getTitle());
+        int spinnerPosition = mSpinnerAdapter.getPosition(mNote.getCourse());
+        spCourses.setSelection(spinnerPosition);
     }
 
     private void fillSpinner() {
@@ -65,14 +71,18 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         if (!isCancel) {
-            mNote.setCourse((CourseInfo) spCourses.getSelectedItem());
-            mNote.setTitle(etTitle.getText().toString());
-            mNote.setText(etText.getText().toString());
-            if (isNewNote) {
-                mNotes.add(mNote);
-            }
+            saveCurrentNote();
         }
         super.onPause();
+    }
+
+    private void saveCurrentNote() {
+        mNote.setCourse((CourseInfo) spCourses.getSelectedItem());
+        mNote.setTitle(etTitle.getText().toString());
+        mNote.setText(etText.getText().toString());
+        if (isNewNote) {
+            mNotes.add(mNote);
+        }
     }
 
     @Override
@@ -80,6 +90,8 @@ public class NoteActivity extends AppCompatActivity {
         //return super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_note,menu);
+        MenuItem item = menu.findItem(R.id.action_next);
+
         return true;
     }
 
@@ -90,6 +102,18 @@ public class NoteActivity extends AppCompatActivity {
                 isCancel = true;
                 this.finish();
                 return true;
+            case R.id.action_next:
+                if (notePosition < mNotes.size()-1){
+                    saveCurrentNote();
+                    notePosition++;
+                    showNote();
+                    this.invalidateOptionsMenu();
+                    if (notePosition == mNotes.size()-1){
+                        item.setEnabled(false);
+                    } else{
+                        item.setEnabled(true);
+                    }
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

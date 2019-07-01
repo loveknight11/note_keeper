@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_undo_24px"
         android:title="@android:string/cancel"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_next"
+        android:icon="@android:drawable/ic_media_next"
+        android:title="Next"
+        app:showAsAction="always" />
 </menu>
