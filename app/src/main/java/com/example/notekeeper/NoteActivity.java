@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,6 +24,8 @@ public class NoteActivity extends AppCompatActivity {
     private EditText etTitle;
     private EditText etText;
     private boolean isNewNote = false;
+    private boolean isCancel = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +64,35 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        mNote.setCourse((CourseInfo) spCourses.getSelectedItem());
-        mNote.setTitle(etTitle.getText().toString());
-        mNote.setText(etText.getText().toString());
-        if (isNewNote) {
-            mNotes.add(mNote);
+        if (!isCancel) {
+            mNote.setCourse((CourseInfo) spCourses.getSelectedItem());
+            mNote.setTitle(etTitle.getText().toString());
+            mNote.setText(etText.getText().toString());
+            if (isNewNote) {
+                mNotes.add(mNote);
+            }
         }
         super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_note,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_cancel:
+                isCancel = true;
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }
