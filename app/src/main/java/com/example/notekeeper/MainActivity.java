@@ -18,11 +18,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView rvList;
+    private List<NoteInfo> mNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,22 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        mNotes = DataManager.getInstance().getNotes();
+
+        rvList = findViewById(R.id.rv_list);
+        setRVAdapter();
+        setRVManager();
+    }
+
+    private void setRVManager() {
+        LinearLayoutManager llManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        rvList.setLayoutManager(llManager);
+    }
+
+    private void setRVAdapter() {
+        NoteAdapter adapter = new NoteAdapter(mNotes,this);
+        rvList.setAdapter(adapter);
     }
 
     @Override

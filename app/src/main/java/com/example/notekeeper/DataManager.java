@@ -8,11 +8,11 @@ public class DataManager {
     private static List<NoteInfo> mNotes = new ArrayList<>();
     private static List<CourseInfo> mCourses = new ArrayList<>();
 
-    public static List<NoteInfo> getNotes() {
+    public List<NoteInfo> getNotes() {
         return mNotes;
     }
 
-    public static List<CourseInfo> getCourses() {
+    public List<CourseInfo> getCourses() {
         return mCourses;
     }
 
