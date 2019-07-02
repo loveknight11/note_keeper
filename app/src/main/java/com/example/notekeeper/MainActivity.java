@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
@@ -19,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity
 
     private RecyclerView rvList;
     private List<NoteInfo> mNotes;
+    private List<CourseInfo> mCourses;
     private NoteAdapter noteAdapter;
+    private CourseAdapter courseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +58,32 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mNotes = DataManager.getInstance().getNotes();
+        mCourses = DataManager.getInstance().getCourses();
 
         rvList = findViewById(R.id.rv_list);
-        setRVAdapter();
-        setRVManager();
+        setRVNotesAdapter();
+        setRVNotesManager();
+        selectNavigationMenuItem(R.id.nav_notes);
     }
 
-    private void setRVManager() {
+    private void setRVNotesManager() {
         LinearLayoutManager llManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         rvList.setLayoutManager(llManager);
     }
 
-    private void setRVAdapter() {
+    private void setRVNotesAdapter() {
         noteAdapter = new NoteAdapter(mNotes,this);
         rvList.setAdapter(noteAdapter);
+    }
+
+    private void setRVCoursesManager() {
+        GridLayoutManager glManager = new GridLayoutManager(this,2,RecyclerView.VERTICAL,false);
+        rvList.setLayoutManager(glManager);
+    }
+
+    private void setRVCoursesAdapter() {
+        courseAdapter = new CourseAdapter(mCourses,this);
+        rvList.setAdapter(courseAdapter);
     }
 
     @Override
@@ -116,14 +130,14 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
+        if (id == R.id.nav_notes) {
+            setRVNotesAdapter();
+            setRVNotesManager();
+            selectNavigationMenuItem(R.id.nav_notes);
+        } else if (id == R.id.nav_courses) {
+            setRVCoursesAdapter();
+            setRVCoursesManager();
+            selectNavigationMenuItem(R.id.nav_courses);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -133,5 +147,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void selectNavigationMenuItem(int id){
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        menu.findItem(id).setChecked(true);
     }
 }
