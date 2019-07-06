@@ -14,19 +14,20 @@
   ~ limitations under the License.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
-        app:key="signature"
-        app:title="@string/signature_title"
+        app:defaultValue="Your Name"
+        app:key="user_display_name"
+        app:title="Display Name"
         app:useSimpleSummaryProvider="true" />
 
-    <ListPreference
-        app:defaultValue="reply"
-        app:entries="@array/reply_entries"
-        app:entryValues="@array/reply_values"
-        app:key="reply"
-        app:title="@string/reply_title"
+    <EditTextPreference
+        app:defaultValue="name@host.com"
+        app:key="user_email_address"
+        app:title="E-mail"
         app:useSimpleSummaryProvider="true" />
+
 
 </androidx.preference.PreferenceScreen>

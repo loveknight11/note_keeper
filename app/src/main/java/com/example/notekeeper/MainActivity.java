@@ -1,10 +1,12 @@
 package com.example.notekeeper;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.preference.PreferenceManager;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -23,6 +25,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -123,6 +128,21 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         noteAdapter.notifyDataSetChanged();
+        updateNavDrawer();
+    }
+
+    private void updateNavDrawer() {
+        NavigationView nav = findViewById(R.id.nav_view);
+        View headerView = nav.getHeaderView(0);
+        TextView tvUsername = headerView.findViewById(R.id.tv_username);
+        TextView tvEmail = headerView.findViewById(R.id.tv_email);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = pref.getString("user_display_name","");
+        String email = pref.getString("user_email_address","");
+
+        tvUsername.setText(userName);
+        tvEmail.setText(email);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

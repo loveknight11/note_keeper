@@ -19,8 +19,8 @@
     <Preference
         app:fragment="com.example.notekeeper.SettingsActivity$MessagesFragment"
         app:icon="@drawable/messages"
-        app:key="messages_header"
-        app:title="@string/messages_header" />
+        app:key="general_header"
+        app:title="@string/general_header" />
 
     <Preference
         app:fragment="com.example.notekeeper.SettingsActivity$SyncFragment"
