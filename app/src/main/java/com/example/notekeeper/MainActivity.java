@@ -2,6 +2,7 @@ package com.example.notekeeper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private List<CourseInfo> mCourses;
     private NoteAdapter noteAdapter;
     private CourseAdapter courseAdapter;
+    private DatabaseOpenHelper mDBOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        mDBOpenHelper = new DatabaseOpenHelper(this);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity
 
         mNotes = DataManager.getInstance().getNotes();
         mCourses = DataManager.getInstance().getCourses();
+        SQLiteDatabase db = mDBOpenHelper.getReadableDatabase();
 
         rvList = findViewById(R.id.rv_list);
         setRVNotesAdapter();
